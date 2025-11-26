@@ -144,3 +144,101 @@ docker container prune
 ---
 
 That's it! 🚀 This is a simple Docker-based **app lifecycle**.
+---
+A **Makefile** is a great way to automate running your **Flask app** with Docker. Below is a simple **`Makefile`** that provides common commands to **build, run, and clean up** the Flask app.
+
+---
+
+## **📄 Makefile for Flask + Docker**
+
+```makefile
+APP_NAME=flask-app
+PORT=5000
+IMAGE_NAME=$(APP_NAME):latest
+CONTAINER_NAME=$(APP_NAME)-container
+
+.PHONY: build run stop clean logs
+
+# 🏗️ Build the Docker image
+build:
+	docker build -t $(IMAGE_NAME) .
+
+# 🚀 Run the Flask app in Docker
+run:
+	docker run -d -p $(PORT):5000 --name $(CONTAINER_NAME) $(IMAGE_NAME)
+
+# ⏹️ Stop the running container
+stop:
+	docker stop $(CONTAINER_NAME) || true
+	docker rm $(CONTAINER_NAME) || true
+
+# 🗑️ Remove the Docker image
+clean: stop
+	docker rmi $(IMAGE_NAME) || true
+
+# 📜 View logs from the container
+logs:
+	docker logs -f $(CONTAINER_NAME)
+```
+
+---
+
+## **🛠 How to Use the Makefile**
+
+### **1️⃣ Build the Docker Image**
+
+```sh
+make build
+```
+
+This runs:
+
+```sh
+docker build -t flask-app:latest .
+```
+
+### **2️⃣ Run the Flask App**
+
+```sh
+make run
+```
+
+This starts a container:
+
+```sh
+docker run -d -p 5000:5000 --name flask-app-container flask-app:latest
+```
+
+### **3️⃣ Check Logs**
+
+```sh
+make logs
+```
+
+This shows logs in real-time:
+
+```sh
+docker logs -f flask-app-container
+```
+
+### **4️⃣ Stop the Container**
+
+```sh
+make stop
+```
+
+This stops & removes the running container.
+
+### **5️⃣ Clean Up (Remove Image)**
+
+```sh
+make clean
+```
+
+This stops the container and deletes the Docker image.
+
+---
+
+## **🎯 Summary**
+
+With this **Makefile**, you can **build, run, stop, and clean up** your Flask app easily using simple `make` commands. 🚀
