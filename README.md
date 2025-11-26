@@ -242,3 +242,79 @@ This stops the container and deletes the Docker image.
 ## **🎯 Summary**
 
 With this **Makefile**, you can **build, run, stop, and clean up** your Flask app easily using simple `make` commands. 🚀
+
+---
+### **🔹 Modify Makefile to Input a Specific Version**
+
+If you want to specify a custom version **when running the `make` command**, you can modify the **Makefile** like this:
+
+---
+
+### **📄 Updated `Makefile`**
+
+```makefile
+APP_NAME=flask-app
+IMAGE_NAME=$(APP_NAME):latest
+VERSION?=1.0  # Allows passing a custom version, defaults to 1.0
+TAGGED_IMAGE=$(APP_NAME):$(VERSION)
+
+.PHONY: build tag list-images
+
+# 🏗️ Build the Docker image
+build:
+	docker build -t $(IMAGE_NAME) .
+
+# 🏷️ Tag the image locally with a specified version
+tag:
+	docker tag $(IMAGE_NAME) $(TAGGED_IMAGE)
+
+# 🔍 List all images to verify the new tag
+list-images:
+	docker images | grep $(APP_NAME)
+```
+
+---
+
+### **🛠 How to Use It**
+
+#### **1️⃣ Default Version (`1.0`)**
+
+```sh
+make tag
+```
+
+✅ This tags the image as `flask-app:1.0` (default).
+
+#### **2️⃣ Custom Version (e.g., `2.0`)**
+
+```sh
+make tag VERSION=2.0
+```
+
+✅ This tags the image as `flask-app:2.0`.
+
+#### **3️⃣ Verify the Tag**
+
+```sh
+make list-images
+```
+
+🔹 Expected output:
+
+```
+flask-app      latest    abc123def456   5 minutes ago
+flask-app      2.0       abc123def456   5 minutes ago
+```
+
+---
+
+### **🎯 Summary**
+
+| Command                | What It Does                                |
+| ---------------------- | ------------------------------------------- |
+| `make build`           | Builds the image (`flask-app:latest`)       |
+| `make tag`             | Tags the image as `flask-app:1.0` (default) |
+| `make tag VERSION=2.0` | Tags the image as `flask-app:2.0`           |
+| `make list-images`     | Lists images with `flask-app`               |
+
+🚀 Now you can **dynamically set versions** when tagging! Let me know if you need more tweaks. 😊

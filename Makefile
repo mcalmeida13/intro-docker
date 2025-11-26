@@ -1,9 +1,11 @@
 APP_NAME=flask-app
 PORT=5000
+VERSION?=1.0 # Allows passing a custom version, defaults to 1.0
 IMAGE_NAME=$(APP_NAME):latest
+TAGGED_IMAGE=$(APP_NAME):$(VERSION)
 CONTAINER_NAME=$(APP_NAME)-container
 
-.PHONY: build run stop clean logs
+.PHONY: build run stop clean logs tag list-images
 
 # 🏗️ Build the Docker image
 build:
@@ -25,3 +27,11 @@ clean: stop
 # 📜 View logs from the container
 logs:
 	docker logs -f $(CONTAINER_NAME)
+
+# 🏷️ Tag the image locally
+tag:
+	docker tag $(IMAGE_NAME) $(TAGGED_IMAGE)
+
+# 🔍 List all images to verify the new tag
+list-images:
+	docker images | grep $(APP_NAME)
